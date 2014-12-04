@@ -4,7 +4,7 @@ puni
 Puni is an extremely lightweight, netty-based web container. It has one job, and that job is to serve HTTP requests.
 
 ## Usage
-The first things you'll need are a configuration class and a configuration file. Puni marshalls its configuration from YAML files.
+The first things you'll need are a configuration class and a configuration file. Puni unmarshalls its configuration from YAML files.
 It also provides a base configuration class that should be subclassed so that we can include the basic configuration that puni requires.
 
 ```java
@@ -74,8 +74,8 @@ public class MyApp extends Application<MyConfig> {
     
     @Override
     public void configure(MyConfig config, Muxer mux) throws Exception {
-        if (!config.enabled)
-            throw new Exception("Application not enabled");
+        if (!config.isEnabled())
+            throw new Exception("Application not enabled.");
           
         mux.handle(HttpMethod.GET, "/hello", new HelloWorldHandler());
     }
@@ -83,7 +83,7 @@ public class MyApp extends Application<MyConfig> {
     public static void main(String[] args) {
         MyApp app = new MyApp();
         try {
-            app.loadConfiguration(new File("path/to/config.yml"));
+            app.loadConfiguration(new File(args[0]));
             app.start();
         } catch (Exception e) {
             e.printStackTrack(e);
@@ -101,3 +101,7 @@ HelloWorldHandler with the muxer with the resource "/hello" and the method GET. 
 the string passed in as the resource can be any valid regex.
 
 The last thing to note is how we actually start the application. It is very important to note that configuration must be loaded using the loadConfiguration() method before the start() method is called. Otherwise, an exception will be thrown.
+
+Now, with all of that out of the way, if you run the application with the first command line argument being the path to the config file, you will see that puni starts up all nice like. That's all fine and dandy, but the real magic comes into play when you point your web browser to http://localhost:8080/hello.
+
+You should now see the text _Hello World_ displayed in your browser. Et Voila! Your first puni app is complete!
