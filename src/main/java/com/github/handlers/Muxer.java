@@ -1,6 +1,5 @@
 package com.github.handlers;
 
-import com.github.handlers.HttpHandler;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,13 +17,25 @@ import java.util.regex.Pattern;
  */
 public class Muxer extends SimpleChannelInboundHandler<FullHttpRequest> {
 
-    private Map<String, HttpHandler> handlerMap = new HashMap<>();
+    private Map<HttpMethod, Map<String, HttpHandler>> methodMap = new HashMap<>();
 
-    public void handle(String path, HttpHandler handler) {
-        handlerMap.put(path, handler);
+    public Muxer() {
+        methodMap.put(HttpMethod.CONNECT, new HashMap<>());
+        methodMap.put(HttpMethod.DELETE, new HashMap<>());
+        methodMap.put(HttpMethod.GET, new HashMap<>());
+        methodMap.put(HttpMethod.HEAD, new HashMap<>());
+        methodMap.put(HttpMethod.OPTIONS, new HashMap<>());
+        methodMap.put(HttpMethod.PATCH, new HashMap<>());
+        methodMap.put(HttpMethod.POST, new HashMap<>());
+        methodMap.put(HttpMethod.PUT, new HashMap<>());
+        methodMap.put(HttpMethod.TRACE, new HashMap<>());
+    }
+    public void handle(HttpMethod method, String path, HttpHandler handler) {
+        methodMap.get(method).put(path, handler);
     }
 
-    private HttpHandler mux(String url) {
+    private HttpHandler mux(String url, HttpMethod method) {
+        Map<String, HttpHandler> handlerMap = methodMap.get(method);
         for (Map.Entry<String, HttpHandler> entry : handlerMap.entrySet()) {
             if (Pattern.matches(entry.getKey(), url))
                 return entry.getValue();
@@ -41,27 +52,14 @@ public class Muxer extends SimpleChannelInboundHandler<FullHttpRequest> {
         }
 
         HttpMethod method = req.getMethod();
-        HttpHandler handler = mux(req.getUri());
+        HttpHandler handler = mux(req.getUri(), method);
         if (handler == null) {
             sendError(ctx, HttpResponseStatus.NOT_FOUND);
             return;
         }
 
         FullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-        if (method == HttpMethod.GET) {
-            handler.get(req, resp);
-        } else if (method == HttpMethod.POST) {
-            handler.post(req, resp);
-        } else if (method == HttpMethod.PUT) {
-            handler.put(req, resp);
-        } else if (method == HttpMethod.PATCH) {
-            handler.patch(req, resp);
-        } else if (method == HttpMethod.DELETE) {
-            handler.delete(req, resp);
-        } else {
-            sendError(ctx, HttpResponseStatus.NOT_IMPLEMENTED);
-            return;
-        }
+        handler.handle(req, resp);
 
         ctx.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
     }

@@ -9,13 +9,5 @@ import io.netty.handler.codec.http.FullHttpResponse;
  */
 public interface HttpHandler {
 
-    public void get(FullHttpRequest req, FullHttpResponse resp);
-
-    public void post(FullHttpRequest req, FullHttpResponse resp);
-
-    public void put(FullHttpRequest req, FullHttpResponse resp);
-
-    public void delete(FullHttpRequest req, FullHttpResponse resp);
-
-    public void patch(FullHttpRequest req, FullHttpResponse resp);
+    public void handle(FullHttpRequest req, FullHttpResponse resp);
 }
