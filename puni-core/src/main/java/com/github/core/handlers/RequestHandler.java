@@ -41,7 +41,7 @@ public class RequestHandler extends SimpleChannelInboundHandler<FullHttpRequest>
 
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, FullHttpRequest req) throws Exception {
-        if (req.getDecoderResult().isSuccess()) {
+        if (!req.getDecoderResult().isSuccess()) {
             sendError(ctx, HttpResponseStatus.BAD_REQUEST);
             return;
         }
