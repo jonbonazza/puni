@@ -28,9 +28,7 @@ public interface HttpHandler {
     /**
      * Handle an incoming HTTP request. This method should be overridden to provide application specific logic.
      * @param req The request to be processed.
-     * @param resp The response that will be sent back to the client. The response object should be modified based
-     *             on an application's business logic. Once the handle() method returns, the response object will be
-     *             sent to the client in whatever state it is in at the time.
+     * @return The response that will be sent back to the client.
      */
-    public void handle(FullHttpRequest req, FullHttpResponse resp);
+    public FullHttpResponse handle(FullHttpRequest req);
 }

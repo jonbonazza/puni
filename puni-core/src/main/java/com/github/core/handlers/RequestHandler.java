@@ -53,9 +53,7 @@ public class RequestHandler extends SimpleChannelInboundHandler<FullHttpRequest>
             return;
         }
 
-        FullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK);
-        handler.handle(req, resp);
-
+        FullHttpResponse resp = handler.handle(req);
         ctx.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
     }
 
