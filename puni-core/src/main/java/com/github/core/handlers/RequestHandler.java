@@ -14,9 +14,9 @@
  * the License.
  */
 
-package com.github.handlers;
+package com.github.core.handlers;
 
-import com.github.mux.Muxer;
+import com.github.core.mux.Muxer;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -32,8 +32,8 @@ public class RequestHandler extends SimpleChannelInboundHandler<FullHttpRequest>
     private Muxer muxer;
 
     /**
-     * Creates a new instance of RequestHandler with the provided {@link com.github.mux.Muxer}
-     * @param muxer The {@link com.github.mux.Muxer} to use for muxing incoming requests.
+     * Creates a new instance of RequestHandler with the provided {@link com.github.core.mux.Muxer}
+     * @param muxer The {@link com.github.core.mux.Muxer} to use for muxing incoming requests.
      */
     public RequestHandler(Muxer muxer) {
         this.muxer = muxer;

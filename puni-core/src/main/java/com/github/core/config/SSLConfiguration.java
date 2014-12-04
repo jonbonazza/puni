@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.github.config;
+package com.github.core.config;
 
 /**
  * SSL related configuration.

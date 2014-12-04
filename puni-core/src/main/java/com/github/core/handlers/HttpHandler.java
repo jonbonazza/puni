@@ -14,14 +14,14 @@
  * the License.
  */
 
-package com.github.handlers;
+package com.github.core.handlers;
 
 import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 /**
  * Interface for handling HTTP requests. Developers should create implementations of HttpHandler
- * and pass them to a {@link com.github.mux.Muxer} for routing.
+ * and pass them to a {@link com.github.core.mux.Muxer} for routing.
  */
 public interface HttpHandler {
 

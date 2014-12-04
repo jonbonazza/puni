@@ -14,9 +14,9 @@
  * the License.
  */
 
-package com.github.mux;
+package com.github.core.mux;
 
-import com.github.handlers.HttpHandler;
+import com.github.core.handlers.HttpHandler;
 import io.netty.handler.codec.http.HttpMethod;
 import org.junit.Before;
 import org.junit.Test;

@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.github.config;
+package com.github.core.config;
 
 /**
  * Base application configuration. Apps should subclass this class and provide further,
@@ -33,7 +33,7 @@ public class AppConfiguration {
     private Integer port = 8080;
 
     /**
-     * {@link com.github.config.SSLConfiguration} instance containing SSL related configuration options.
+     * {@link com.github.core.config.SSLConfiguration} instance containing SSL related configuration options.
      */
     private SSLConfiguration ssl = new SSLConfiguration();
 

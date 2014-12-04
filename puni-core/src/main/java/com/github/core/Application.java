@@ -14,12 +14,12 @@
  * the License.
  */
 
-package com.github;
+package com.github.core;
 
-import com.github.config.AppConfiguration;
-import com.github.exceptions.NoConfigurationException;
-import com.github.mux.DefaultMuxer;
-import com.github.mux.Muxer;
+import com.github.core.config.AppConfiguration;
+import com.github.core.exceptions.NoConfigurationException;
+import com.github.core.mux.DefaultMuxer;
+import com.github.core.mux.Muxer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -37,7 +37,7 @@ import java.io.InputStream;
 
 /**
  * Abstract base class for puni applications. Developers should subclass this class to provide application specific
- * logic for {@link com.github.Application#configure}.
+ * logic for {@link Application#configure}.
  *
  */
 public abstract class Application<T extends AppConfiguration> {
@@ -82,7 +82,7 @@ public abstract class Application<T extends AppConfiguration> {
     /**
      * Loads YAML configuration from file, unmarshalling it into the provided class type.
      * @param file The file to load the configuration from. This must be called before
-     * {@link com.github.Application#start} is called.
+     * {@link Application#start} is called.
      * @throws IOException if something went wrong during loading.
      */
     public void loadConfiguration(File file) throws IOException {
@@ -93,8 +93,8 @@ public abstract class Application<T extends AppConfiguration> {
     }
 
     /**
-     * Starts the application server. {@link com.github.Application#loadConfiguration} must already have been called
-     * or a {@link com.github.exceptions.NoConfigurationException} will be thrown.
+     * Starts the application server. {@link Application#loadConfiguration} must already have been called
+     * or a {@link com.github.core.exceptions.NoConfigurationException} will be thrown.
      * @throws Exception if something goes wrong during the startup process. If an exception is thrown, the server was
      * not started.
      */

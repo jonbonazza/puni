@@ -14,9 +14,9 @@
  * the License.
  */
 
-package com.github.mux;
+package com.github.core.mux;
 
-import com.github.handlers.HttpHandler;
+import com.github.core.handlers.HttpHandler;
 import io.netty.handler.codec.http.HttpMethod;
 
 /**
@@ -28,7 +28,7 @@ public interface Muxer {
      * Registers handler with the muxer for requests to path, with method
      * @param method The HTTP method that handler should be tied to.
      * @param path The resource that handler should be tied to.
-     * @param handler The {@link com.github.handlers.HttpHandler} that should handle requests at method and path.
+     * @param handler The {@link com.github.core.handlers.HttpHandler} that should handle requests at method and path.
      */
     public void handle(HttpMethod method, String path, HttpHandler handler);
 

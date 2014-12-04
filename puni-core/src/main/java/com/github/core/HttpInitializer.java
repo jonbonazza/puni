@@ -14,10 +14,10 @@
  * the License.
  */
 
-package com.github;
+package com.github.core;
 
-import com.github.handlers.RequestHandler;
-import com.github.mux.Muxer;
+import com.github.core.handlers.RequestHandler;
+import com.github.core.mux.Muxer;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;

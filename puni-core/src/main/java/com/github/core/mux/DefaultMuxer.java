@@ -14,9 +14,9 @@
  * the License.
  */
 
-package com.github.mux;
+package com.github.core.mux;
 
-import com.github.handlers.HttpHandler;
+import com.github.core.handlers.HttpHandler;
 import com.google.common.annotations.VisibleForTesting;
 import io.netty.handler.codec.http.HttpMethod;
 
@@ -25,7 +25,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Default {@link com.github.mux.Muxer} implementation using Regex.
+ * Default {@link com.github.core.mux.Muxer} implementation using Regex.
  */
 public class DefaultMuxer  implements Muxer {
 
@@ -52,7 +52,7 @@ public class DefaultMuxer  implements Muxer {
      * Registers handler for muxing at resource path and method method.
      * @param method The HTTP method that handler should be tied to.
      * @param path The resource that handler should be tied to.
-     * @param handler The {@link com.github.handlers.HttpHandler} that should handle requests at method and path.
+     * @param handler The {@link com.github.core.handlers.HttpHandler} that should handle requests at method and path.
      */
     public void handle(HttpMethod method, String path, HttpHandler handler) {
         methodMap.get(method).put(path, handler);

@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.github.exceptions;
+package com.github.core.exceptions;
 
 /**
  * Exception implying that No configuration was provided to the application.
