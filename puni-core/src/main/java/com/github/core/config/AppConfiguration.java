@@ -33,6 +33,11 @@ public class AppConfiguration {
     private Integer port = 8080;
 
     /**
+     * The number of threads to use for the EventLoopGroup. Defaults to 5.
+     */
+    private Integer eventLoopThreadCount = 5;
+
+    /**
      * {@link com.github.core.config.SSLConfiguration} instance containing SSL related configuration options.
      */
     private SSLConfiguration ssl = new SSLConfiguration();
@@ -52,6 +57,14 @@ public class AppConfiguration {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public Integer getEventLoopThreadCount() {
+        return eventLoopThreadCount;
+    }
+
+    public void setEventLoopThreadCount(Integer eventLoopThreadCount) {
+        this.eventLoopThreadCount = eventLoopThreadCount;
     }
 
     public SSLConfiguration getSsl() {

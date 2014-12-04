@@ -62,20 +62,18 @@ public abstract class Application<T extends AppConfiguration> {
             sslContext = SslContext.newClientContext(new File(config.getSsl().getCert()));
         }
 
-        EventLoopGroup bossGroup = new NioEventLoopGroup();
-        EventLoopGroup workerGroup = new NioEventLoopGroup();
+        EventLoopGroup eventGroup = new NioEventLoopGroup(config.getEventLoopThreadCount());
 
         try {
             ServerBootstrap b = new ServerBootstrap();
-            b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).
+            b.group(eventGroup).channel(NioServerSocketChannel.class).
                     handler(new LoggingHandler(LogLevel.INFO)).
                     childHandler(new HttpInitializer(sslContext, muxer));
             Channel ch = b.bind(config.getPort()).sync().channel();
             ch.closeFuture().sync();
             bootstrapped = true;
         } finally {
-            bossGroup.shutdownGracefully();
-            workerGroup.shutdownGracefully();
+            eventGroup.shutdownGracefully();
         }
     }
 
