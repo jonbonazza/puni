@@ -70,9 +70,9 @@ public abstract class Application<T extends AppConfiguration> {
             b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).
                     handler(new LoggingHandler(LogLevel.INFO)).
                     childHandler(new HttpInitializer(sslContext, muxer));
-            bootstrapped = true;
             Channel ch = b.bind(config.getPort()).sync().channel();
             ch.closeFuture().sync();
+            bootstrapped = true;
         } finally {
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
