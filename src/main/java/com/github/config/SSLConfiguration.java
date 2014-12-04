@@ -17,14 +17,28 @@
 package com.github.config;
 
 /**
- *
- * Created by bonazza on 12/2/14.
+ * SSL related configuration.
  */
 public class SSLConfiguration {
 
+    /**
+     * Whether or not to enable SSL. Defaults to false.
+     */
     private boolean enabled = false;
+
+    /**
+     * The path to the truststore file. This should be a file containing all trusted certificates.
+     */
     private String truststore;
+
+    /**
+     * The path to the server's certificate.
+     */
     private String cert;
+
+    /**
+     * The path to the server's private key. The private key MUST match the certificate pointed to by cert.
+     */
     private String privateKey;
 
     public boolean isEnabled() {

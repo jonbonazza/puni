@@ -25,11 +25,8 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.ssl.SslContext;
 
-/**
- *
- * Created by bonazza on 12/2/14.
- */
-public class HttpInitializer extends ChannelInitializer<SocketChannel> {
+
+class HttpInitializer extends ChannelInitializer<SocketChannel> {
 
     private SslContext sslContext;
     private Muxer muxer;

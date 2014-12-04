@@ -17,8 +17,7 @@
 package com.github.exceptions;
 
 /**
- *
- * Created by bonazza on 12/3/14.
+ * Exception implying that No configuration was provided to the application.
  */
 public class NoConfigurationException extends Exception {
 

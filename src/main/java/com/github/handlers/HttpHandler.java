@@ -20,10 +20,17 @@ import io.netty.handler.codec.http.FullHttpRequest;
 import io.netty.handler.codec.http.FullHttpResponse;
 
 /**
- *
- * Created by bonazza on 12/2/14.
+ * Interface for handling HTTP requests. Developers should create implementations of HttpHandler
+ * and pass them to a {@link com.github.mux.Muxer} for routing.
  */
 public interface HttpHandler {
 
+    /**
+     * Handle an incoming HTTP request. This method should be overridden to provide application specific logic.
+     * @param req The request to be processed.
+     * @param resp The response that will be sent back to the client. The response object should be modified based
+     *             on an application's business logic. Once the handle() method returns, the response object will be
+     *             sent to the client in whatever state it is in at the time.
+     */
     public void handle(FullHttpRequest req, FullHttpResponse resp);
 }

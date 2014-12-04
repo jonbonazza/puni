@@ -17,22 +17,33 @@
 package com.github.config;
 
 /**
- *
- * Created by bonazza on 12/2/14.
+ * Base application configuration. Apps should subclass this class and provide further,
+ * application specific configuration options.
  */
 public class AppConfiguration {
 
-    private String host = "0.0.0.0";
+    /**
+     * The address to bind the application to. Defaults to 0.0.0.0
+     */
+    private String bindAddress = "0.0.0.0";
+
+    /**
+     * The port to bind the application to. Defaults to 8080
+     */
     private Integer port = 8080;
+
+    /**
+     * {@link com.github.config.SSLConfiguration} instance containing SSL related configuration options.
+     */
     private SSLConfiguration ssl = new SSLConfiguration();
 
 
-    public String getHost() {
-        return host;
+    public String getBindAddress() {
+        return bindAddress;
     }
 
-    public void setHost(String host) {
-        this.host = host;
+    public void setBindAddress(String bindAddress) {
+        this.bindAddress = bindAddress;
     }
 
     public Integer getPort() {

@@ -17,7 +17,6 @@
 package com.github.handlers;
 
 import com.github.mux.Muxer;
-import com.google.common.annotations.VisibleForTesting;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -25,18 +24,17 @@ import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.*;
 import io.netty.util.CharsetUtil;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.regex.Pattern;
-
 /**
- *
- * Created by bonazza on 12/2/14.
+ * Netty Channel handler that muxes incoming http requests before handling them.
  */
 public class RequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
-    Muxer muxer;
+    private Muxer muxer;
 
+    /**
+     * Creates a new instance of RequestHandler with the provided {@link com.github.mux.Muxer}
+     * @param muxer The {@link com.github.mux.Muxer} to use for muxing incoming requests.
+     */
     public RequestHandler(Muxer muxer) {
         this.muxer = muxer;
     }

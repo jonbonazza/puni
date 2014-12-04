@@ -25,8 +25,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- *
- * Created by bonazza on 12/3/14.
+ * Default {@link com.github.mux.Muxer} implementation using Regex.
  */
 public class DefaultMuxer  implements Muxer {
 
@@ -49,15 +48,26 @@ public class DefaultMuxer  implements Muxer {
         this.methodMap = methodMap;
     }
 
+    /**
+     * Registers handler for muxing at resource path and method method.
+     * @param method The HTTP method that handler should be tied to.
+     * @param path The resource that handler should be tied to.
+     * @param handler The {@link com.github.handlers.HttpHandler} that should handle requests at method and path.
+     */
     public void handle(HttpMethod method, String path, HttpHandler handler) {
         methodMap.get(method).put(path, handler);
     }
 
-    @VisibleForTesting
-    public HttpHandler mux(String url, HttpMethod method) {
+    /**
+     * Uses Regex to mux a request with resource resource and method method.
+     * @param resource The resource of the request to mux.
+     * @param method The HTTP method of the request to mux.
+     * @return
+     */
+    public HttpHandler mux(String resource, HttpMethod method) {
         Map<String, HttpHandler> handlerMap = methodMap.get(method);
         for (Map.Entry<String, HttpHandler> entry : handlerMap.entrySet()) {
-            if (Pattern.matches(entry.getKey(), url))
+            if (Pattern.matches(entry.getKey(), resource))
                 return entry.getValue();
         }
 

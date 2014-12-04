@@ -36,8 +36,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * 
- * Created by bonazza on 12/2/14.
+ * Abstract base class for puni applications. Developers should subclass this class to provide application specific
+ * logic for {@link com.github.Application#configure}.
+ *
  */
 public abstract class Application<T extends AppConfiguration> {
 
@@ -47,6 +48,10 @@ public abstract class Application<T extends AppConfiguration> {
 
     private boolean bootstrapped = false;
 
+    /**
+     * Creates a new Application instance using the configType class for configuration.
+     * @param configType The class to unmarshal configuration to.
+     */
     public Application(Class<T> configType) {
         this.configType = configType;
     }
@@ -74,6 +79,12 @@ public abstract class Application<T extends AppConfiguration> {
         }
     }
 
+    /**
+     * Loads YAML configuration from file, unmarshalling it into the provided class type.
+     * @param file The file to load the configuration from. This must be called before
+     * {@link com.github.Application#start} is called.
+     * @throws IOException if something went wrong during loading.
+     */
     public void loadConfiguration(File file) throws IOException {
         try (InputStream is = new FileInputStream(file)) {
             Yaml yaml = new Yaml();
@@ -81,6 +92,12 @@ public abstract class Application<T extends AppConfiguration> {
         }
     }
 
+    /**
+     * Starts the application server. {@link com.github.Application#loadConfiguration} must already have been called
+     * or a {@link com.github.exceptions.NoConfigurationException} will be thrown.
+     * @throws Exception if something goes wrong during the startup process. If an exception is thrown, the server was
+     * not started.
+     */
     public void start() throws Exception {
         if (config == null) {
             throw new NoConfigurationException();
@@ -90,8 +107,21 @@ public abstract class Application<T extends AppConfiguration> {
         bootstrap();
     }
 
+    /**
+     * Should be overridden by subclasses to further configure the application. For example, regeristing handlers with
+     * the muxer or changing the muxer all together is done here.
+     * @param configuration The configuration that was loaded from file.
+     * @param muxer The default muxer is passed in for convenience. Is a different muxer is to be used,
+     *              this parameter can be ignored.
+     * @throws Exception Implementation should throw an exception is something goes wrong.
+     */
     protected abstract void configure(T configuration, Muxer muxer) throws Exception;
 
+    /**
+     * Sets the muxer to use with the application. This can only be done before the application has been bootstrapped.
+     * @param muxer The new muxer that should be used by the application
+     * @throws Exception if called after the application has been bootstrapped.
+     */
     public void setMuxer(Muxer muxer) throws Exception {
         if (bootstrapped)
             throw new Exception("Cannot change muxer once the application has been bootstrapped");
