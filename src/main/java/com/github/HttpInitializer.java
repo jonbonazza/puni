@@ -16,7 +16,8 @@
 
 package com.github;
 
-import com.github.handlers.Muxer;
+import com.github.handlers.RequestHandler;
+import com.github.mux.Muxer;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
@@ -46,6 +47,6 @@ public class HttpInitializer extends ChannelInitializer<SocketChannel> {
 
         pipeline.addLast(new HttpServerCodec());
         pipeline.addLast(new HttpObjectAggregator(65536));
-        pipeline.addLast(muxer);
+        pipeline.addLast(new RequestHandler(muxer));
     }
 }

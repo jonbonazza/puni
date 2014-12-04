@@ -18,7 +18,8 @@ package com.github;
 
 import com.github.config.AppConfiguration;
 import com.github.exceptions.NoConfigurationException;
-import com.github.handlers.Muxer;
+import com.github.mux.DefaultMuxer;
+import com.github.mux.Muxer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -29,7 +30,10 @@ import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslContext;
 import org.yaml.snakeyaml.Yaml;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * 
@@ -39,7 +43,9 @@ public abstract class Application<T extends AppConfiguration> {
 
     private Class<T> configType;
     private T config;
-    private Muxer muxer = new Muxer();
+    private Muxer muxer = new DefaultMuxer();
+
+    private boolean bootstrapped = false;
 
     public Application(Class<T> configType) {
         this.configType = configType;
@@ -59,7 +65,7 @@ public abstract class Application<T extends AppConfiguration> {
             b.group(bossGroup, workerGroup).channel(NioServerSocketChannel.class).
                     handler(new LoggingHandler(LogLevel.INFO)).
                     childHandler(new HttpInitializer(sslContext, muxer));
-
+            bootstrapped = true;
             Channel ch = b.bind(config.getPort()).sync().channel();
             ch.closeFuture().sync();
         } finally {
@@ -85,4 +91,11 @@ public abstract class Application<T extends AppConfiguration> {
     }
 
     protected abstract void configure(T configuration, Muxer muxer) throws Exception;
+
+    public void setMuxer(Muxer muxer) throws Exception {
+        if (bootstrapped)
+            throw new Exception("Cannot change muxer once the application has been bootstrapped");
+
+        this.muxer = muxer;
+    }
 }

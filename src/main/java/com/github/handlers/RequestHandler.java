@@ -16,6 +16,7 @@
 
 package com.github.handlers;
 
+import com.github.mux.Muxer;
 import com.google.common.annotations.VisibleForTesting;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
@@ -32,41 +33,12 @@ import java.util.regex.Pattern;
  *
  * Created by bonazza on 12/2/14.
  */
-public class Muxer extends SimpleChannelInboundHandler<FullHttpRequest> {
+public class RequestHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
-    private Map<HttpMethod, Map<String, HttpHandler>> methodMap = new HashMap<>();
+    Muxer muxer;
 
-    public Muxer() {
-        methodMap.put(HttpMethod.CONNECT, new HashMap<>());
-        methodMap.put(HttpMethod.DELETE, new HashMap<>());
-        methodMap.put(HttpMethod.GET, new HashMap<>());
-        methodMap.put(HttpMethod.HEAD, new HashMap<>());
-        methodMap.put(HttpMethod.OPTIONS, new HashMap<>());
-        methodMap.put(HttpMethod.PATCH, new HashMap<>());
-        methodMap.put(HttpMethod.POST, new HashMap<>());
-        methodMap.put(HttpMethod.PUT, new HashMap<>());
-        methodMap.put(HttpMethod.TRACE, new HashMap<>());
-    }
-
-    @VisibleForTesting
-    protected Muxer(Map<HttpMethod, Map<String, HttpHandler>> methodMap) {
-        this.methodMap = methodMap;
-    }
-
-    @VisibleForTesting
-    protected void handle(HttpMethod method, String path, HttpHandler handler) {
-        methodMap.get(method).put(path, handler);
-    }
-
-    @VisibleForTesting
-    protected HttpHandler mux(String url, HttpMethod method) {
-        Map<String, HttpHandler> handlerMap = methodMap.get(method);
-        for (Map.Entry<String, HttpHandler> entry : handlerMap.entrySet()) {
-            if (Pattern.matches(entry.getKey(), url))
-                return entry.getValue();
-        }
-
-        return null;
+    public RequestHandler(Muxer muxer) {
+        this.muxer = muxer;
     }
 
     @Override
@@ -77,7 +49,7 @@ public class Muxer extends SimpleChannelInboundHandler<FullHttpRequest> {
         }
 
         HttpMethod method = req.getMethod();
-        HttpHandler handler = mux(req.getUri(), method);
+        HttpHandler handler = muxer.mux(req.getUri(), method);
         if (handler == null) {
             sendError(ctx, HttpResponseStatus.NOT_FOUND);
             return;
@@ -95,10 +67,5 @@ public class Muxer extends SimpleChannelInboundHandler<FullHttpRequest> {
         resp.headers().set(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         context.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
-    }
-
-    @VisibleForTesting
-    protected Map<HttpMethod, Map<String, HttpHandler>> getMethodMap() {
-        return methodMap;
     }
 }

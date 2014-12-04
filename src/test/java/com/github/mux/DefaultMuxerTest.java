@@ -14,8 +14,9 @@
  * the License.
  */
 
-package com.github.handlers;
+package com.github.mux;
 
+import com.github.handlers.HttpHandler;
 import io.netty.handler.codec.http.HttpMethod;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,12 +29,11 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
 /**
- *
  * Created by bonazza on 12/3/14.
  */
-public class MuxerTest {
+public class DefaultMuxerTest {
 
-    private Muxer muxer;
+    private DefaultMuxer muxer;
 
     @Before
     public void setupTest() {
@@ -42,7 +42,7 @@ public class MuxerTest {
         Map<String, HttpHandler> handlerMap = new HashMap<>();
         handlerMap.put("/test/.*", handler);
         methodMap.put(HttpMethod.GET, handlerMap);
-        muxer = new Muxer(methodMap);
+        muxer = new DefaultMuxer(methodMap);
     }
     @Test
     public void testMux() {
