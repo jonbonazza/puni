@@ -47,7 +47,9 @@ public class RequestHandler extends SimpleChannelInboundHandler<FullHttpRequest>
         }
 
         HttpMethod method = req.getMethod();
-        HttpHandler handler = muxer.mux(req.getUri(), method);
+        System.out.println(req.getDecoderResult().toString());
+        String resource = req.getUri().split("\\?")[0];
+        HttpHandler handler = muxer.mux(resource, method);
         if (handler == null) {
             sendError(ctx, HttpResponseStatus.NOT_FOUND);
             return;
