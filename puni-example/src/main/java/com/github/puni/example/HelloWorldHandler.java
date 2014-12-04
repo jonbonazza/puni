@@ -14,11 +14,19 @@
  * the License.
  */
 
+package com.github.puni.example;
 
+import com.github.core.handlers.HttpHandler;
+import io.netty.buffer.Unpooled;
+import io.netty.handler.codec.http.*;
+import io.netty.util.CharsetUtil;
 
-rootProject.name = 'puni'
+public class HelloWorldHandler implements HttpHandler {
 
-include 'puni-core'
-
-include 'puni-example'
-
+    @Override
+    public FullHttpResponse handle(FullHttpRequest req) {
+        return new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
+                HttpResponseStatus.OK,
+                Unpooled.copiedBuffer("Hello World!", CharsetUtil.UTF_8));
+    }
+}
