@@ -1,5 +1,6 @@
 package com.github.handlers;
 
+import com.google.common.annotations.VisibleForTesting;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -30,11 +31,19 @@ public class Muxer extends SimpleChannelInboundHandler<FullHttpRequest> {
         methodMap.put(HttpMethod.PUT, new HashMap<>());
         methodMap.put(HttpMethod.TRACE, new HashMap<>());
     }
-    public void handle(HttpMethod method, String path, HttpHandler handler) {
+
+    @VisibleForTesting
+    protected Muxer(Map<HttpMethod, Map<String, HttpHandler>> methodMap) {
+        this.methodMap = methodMap;
+    }
+
+    @VisibleForTesting
+    protected void handle(HttpMethod method, String path, HttpHandler handler) {
         methodMap.get(method).put(path, handler);
     }
 
-    private HttpHandler mux(String url, HttpMethod method) {
+    @VisibleForTesting
+    protected HttpHandler mux(String url, HttpMethod method) {
         Map<String, HttpHandler> handlerMap = methodMap.get(method);
         for (Map.Entry<String, HttpHandler> entry : handlerMap.entrySet()) {
             if (Pattern.matches(entry.getKey(), url))
@@ -70,5 +79,10 @@ public class Muxer extends SimpleChannelInboundHandler<FullHttpRequest> {
         resp.headers().set(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         context.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
+    }
+
+    @VisibleForTesting
+    protected Map<HttpMethod, Map<String, HttpHandler>> getMethodMap() {
+        return methodMap;
     }
 }
