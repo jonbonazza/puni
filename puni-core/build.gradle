@@ -48,4 +48,9 @@ dependencies {
     compile 'org.yaml:snakeyaml:1.14'
 }
 
+shadowJar {
+    baseName='puni'
+    classifier=''
+}
+
 build.dependsOn("shadowJar")
