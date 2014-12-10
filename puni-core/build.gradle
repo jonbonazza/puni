@@ -75,7 +75,7 @@ bintray {
     publish = true
     pkg {
         repo = 'maven'
-        name = 'puni'
+        name = 'puni-core'
         desc = 'Lightweight netty-based web container.'
         websiteUrl = 'https://github.com/jonbonazza/puni'
         issueTrackerUrl = ''
