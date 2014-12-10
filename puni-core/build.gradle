@@ -86,4 +86,4 @@ bintray {
     }
 }
 
-build.dependsOn("shadowJar")
+preTagCommit.dependsOn("bintrayUpload")
