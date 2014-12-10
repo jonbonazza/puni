@@ -27,12 +27,7 @@ public class SSLConfiguration {
     private boolean enabled = false;
 
     /**
-     * The path to the truststore file. This should be a file containing all trusted certificates.
-     */
-    private String truststore;
-
-    /**
-     * The path to the server's certificate.
+     * The path to the server's certificate chain.
      */
     private String cert;
 
@@ -47,14 +42,6 @@ public class SSLConfiguration {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
-    }
-
-    public String getTruststore() {
-        return truststore;
-    }
-
-    public void setTruststore(String truststore) {
-        this.truststore = truststore;
     }
 
     public String getCert() {

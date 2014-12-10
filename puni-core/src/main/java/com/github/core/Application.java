@@ -17,6 +17,7 @@
 package com.github.core;
 
 import com.github.core.config.AppConfiguration;
+import com.github.core.config.SSLConfiguration;
 import com.github.core.exceptions.NoConfigurationException;
 import com.github.core.mux.DefaultMuxer;
 import com.github.core.mux.Muxer;
@@ -58,8 +59,10 @@ public abstract class Application<T extends AppConfiguration> {
 
     private void bootstrap() throws Exception {
         SslContext sslContext = null;
+        SSLConfiguration sslConfig = config.getSsl();
         if (config.getSsl().isEnabled()) {
-            sslContext = SslContext.newClientContext(new File(config.getSsl().getCert()));
+            sslContext = SslContext.newServerContext(new File(sslConfig.getCert()),
+                    new File(sslConfig.getPrivateKey()));
         }
 
         EventLoopGroup eventGroup = new NioEventLoopGroup(config.getEventLoopThreadCount());
