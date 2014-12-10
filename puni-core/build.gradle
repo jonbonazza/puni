@@ -34,6 +34,10 @@ plugins {
     id 'maven-publish'
 }
 
+task sourceJar(type: Jar) {
+    from sourceSets.main.allJava
+}
+
 shadowJar {
     baseName='puni-core'
     classifier=''
@@ -45,6 +49,10 @@ publishing {
             from components.shadow
             groupId = 'com.github.jonbonazza'
             artifactId = 'puni-core'
+
+            artifact sourceJar {
+                classifier "sources"
+            }
         }
     }
 }
