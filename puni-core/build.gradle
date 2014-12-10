@@ -17,11 +17,13 @@
 buildscript {
     repositories {
         mavenCentral()
+        jcenter()
         maven { url "https://oss.sonatype.org/content/groups/public"}
     }
 
     dependencies {
         classpath 'com.github.townsfolk:gradle-release:1.2'
+        classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:0.5'
     }
 }
 
@@ -29,8 +31,25 @@ plugins {
     id 'java'
     id 'idea'
     id 'com.github.johnrengelman.shadow' version '1.2.0'
+    id 'maven-publish'
 }
 
+shadowJar {
+    baseName='puni-core'
+    classifier=''
+}
+
+publishing {
+    publications {
+        shadow(MavenPublication) {
+            from components.shadow
+            groupId = 'com.github.jonbonazza'
+            artifactId = 'puni-core'
+        }
+    }
+}
+
+apply plugin: 'com.jfrog.bintray'
 apply plugin: 'release'
 
 sourceCompatibility = 1.8
@@ -48,9 +67,23 @@ dependencies {
     compile 'org.yaml:snakeyaml:1.14'
 }
 
-shadowJar {
-    baseName='puni-core'
-    classifier=''
+bintray {
+    user = "${BINTRAY_USER}"
+    key = "${BINTRAY_API_KEY}"
+
+    publications = ['shadow']
+    publish = true
+    pkg {
+        repo = 'maven'
+        name = 'puni'
+        desc = 'Lightweight netty-based web container.'
+        websiteUrl = 'https://github.com/jonbonazza/puni'
+        issueTrackerUrl = ''
+        vcsUrl = 'https://github.com/jonbonazza/puni.git'
+        licenses = ['Apache-2.0']
+        labels = []
+        publicDownloadNumbers = true
+    }
 }
 
 build.dependsOn("shadowJar")
