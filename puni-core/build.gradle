@@ -35,8 +35,6 @@ apply plugin: 'release'
 
 sourceCompatibility = 1.8
 
-apply plugin: 'release'
-
 repositories {
     mavenCentral()
 }
@@ -49,3 +47,5 @@ dependencies {
     compile 'com.google.guava:guava:18.0'
     compile 'org.yaml:snakeyaml:1.14'
 }
+
+release.dependsOn(shadowJar)
