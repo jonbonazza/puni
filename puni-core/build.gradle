@@ -48,4 +48,4 @@ dependencies {
     compile 'org.yaml:snakeyaml:1.14'
 }
 
-build.dependsOn(shadowJar)
+build.dependsOn("shadowJar")
