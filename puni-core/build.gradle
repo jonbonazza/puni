@@ -49,7 +49,7 @@ dependencies {
 }
 
 shadowJar {
-    baseName='puni'
+    baseName='puni-core'
     classifier=''
 }
 
