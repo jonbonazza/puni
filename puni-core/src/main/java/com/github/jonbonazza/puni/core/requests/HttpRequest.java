@@ -18,9 +18,10 @@ package com.github.jonbonazza.puni.core.requests;
 
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.handler.codec.http.QueryStringDecoder;
 
 import java.util.Arrays;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -29,7 +30,7 @@ import java.util.Map;
  */
 public class HttpRequest extends DefaultFullHttpRequest {
 
-    protected Map<String, String> formData = new HashMap<>();
+    protected Map<String, List<String>> formData;
     protected String[] uriComponents;
 
     public HttpRequest(FullHttpRequest req) {
@@ -43,15 +44,11 @@ public class HttpRequest extends DefaultFullHttpRequest {
     }
 
     protected void parseFormData(String queryParamSection) {
-        String[] queryParams = queryParamSection.split("&");
-        for (String param : queryParams) {
-            String[] paramComponents = param.split("=");
-            if (paramComponents.length == 2)
-                formData.put(paramComponents[0], paramComponents[1]);
-        }
+        QueryStringDecoder decoder = new QueryStringDecoder(getUri());
+        formData = decoder.parameters();
     }
 
-    public Map<String, String> getFormData() {
+    public Map<String, List<String>> getFormData() {
         return formData;
     }
 
