@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.github.core.config;
+package com.github.jonbonazza.puni.core.config;
 
 /**
  * Base application configuration. Apps should subclass this class and provide further,
@@ -38,7 +38,7 @@ public class AppConfiguration {
     private Integer eventLoopThreadCount = 5;
 
     /**
-     * {@link com.github.core.config.SSLConfiguration} instance containing SSL related configuration options.
+     * {@link SSLConfiguration} instance containing SSL related configuration options.
      */
     private SSLConfiguration ssl = new SSLConfiguration();
 

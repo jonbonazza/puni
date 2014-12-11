@@ -14,19 +14,14 @@
  * the License.
  */
 
-package com.github.puni.example;
+package com.github.jonbonazza.puni.core.exceptions;
 
-import com.github.core.handlers.HttpHandler;
-import io.netty.buffer.Unpooled;
-import io.netty.handler.codec.http.*;
-import io.netty.util.CharsetUtil;
+/**
+ * Exception implying that No configuration was provided to the application.
+ */
+public class NoConfigurationException extends Exception {
 
-public class HelloWorldHandler implements HttpHandler {
-
-    @Override
-    public FullHttpResponse handle(FullHttpRequest req) {
-        return new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
-                HttpResponseStatus.OK,
-                Unpooled.copiedBuffer("Hello World!", CharsetUtil.UTF_8));
+    public NoConfigurationException() {
+        super("No configuration file provided. Please call loadConfiguration() before starting the application.");
     }
 }

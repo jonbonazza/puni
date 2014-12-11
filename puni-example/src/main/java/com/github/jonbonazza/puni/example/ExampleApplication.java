@@ -14,11 +14,11 @@
  * the License.
  */
 
-package com.github.puni.example;
+package com.github.jonbonazza.puni.example;
 
-import com.github.core.Application;
-import com.github.core.config.AppConfiguration;
-import com.github.core.mux.Muxer;
+import com.github.jonbonazza.puni.core.Application;
+import com.github.jonbonazza.puni.core.config.AppConfiguration;
+import com.github.jonbonazza.puni.core.mux.Muxer;
 import io.netty.handler.codec.http.HttpMethod;
 
 import java.io.File;

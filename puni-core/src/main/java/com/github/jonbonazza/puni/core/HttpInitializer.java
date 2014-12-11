@@ -14,10 +14,10 @@
  * the License.
  */
 
-package com.github.core;
+package com.github.jonbonazza.puni.core;
 
-import com.github.core.handlers.RequestHandler;
-import com.github.core.mux.Muxer;
+import com.github.jonbonazza.puni.core.handlers.RequestHandler;
+import com.github.jonbonazza.puni.core.mux.Muxer;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;

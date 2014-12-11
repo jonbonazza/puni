@@ -14,14 +14,14 @@
  * the License.
  */
 
-package com.github.core.handlers;
+package com.github.jonbonazza.puni.core.handlers;
 
-import io.netty.handler.codec.http.FullHttpRequest;
-import io.netty.handler.codec.http.FullHttpResponse;
+import com.github.jonbonazza.puni.core.requests.HttpRequest;
+import com.github.jonbonazza.puni.core.requests.HttpResponse;
 
 /**
  * Interface for handling HTTP requests. Developers should create implementations of HttpHandler
- * and pass them to a {@link com.github.core.mux.Muxer} for routing.
+ * and pass them to a {@link com.github.jonbonazza.puni.core.mux.Muxer} for routing.
  */
 public interface HttpHandler {
 
@@ -30,5 +30,5 @@ public interface HttpHandler {
      * @param req The request to be processed.
      * @return The response that will be sent back to the client.
      */
-    public FullHttpResponse handle(FullHttpRequest req);
+    public HttpResponse handle(HttpRequest req);
 }

@@ -14,9 +14,10 @@
  * the License.
  */
 
-package com.github.core.mux;
+package com.github.jonbonazza.puni.core.mux;
 
-import com.github.core.handlers.HttpHandler;
+import com.github.jonbonazza.puni.core.handlers.HttpHandler;
+import com.github.jonbonazza.puni.core.requests.HttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
 
 /**
@@ -28,15 +29,14 @@ public interface Muxer {
      * Registers handler with the muxer for requests to path, with method
      * @param method The HTTP method that handler should be tied to.
      * @param path The resource that handler should be tied to.
-     * @param handler The {@link com.github.core.handlers.HttpHandler} that should handle requests at method and path.
+     * @param handler The {@link com.github.jonbonazza.puni.core.handlers.HttpHandler} that should handle requests at method and path.
      */
     public void handle(HttpMethod method, String path, HttpHandler handler);
 
     /**
      * Mux the request to resource with method method.
-     * @param resource The resource of the request to mux.
-     * @param method The HTTP method of the request to mux.
+     * @param request The request to mux.
      * @return The HttpHandler that matches the request. If no handler matches the request, null should be returned.
      */
-    public HttpHandler mux(String resource, HttpMethod method);
+    public HttpHandler mux(HttpRequest request);
 }

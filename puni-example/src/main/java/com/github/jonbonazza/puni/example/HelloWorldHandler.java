@@ -14,14 +14,16 @@
  * the License.
  */
 
-package com.github.core.exceptions;
+package com.github.jonbonazza.puni.example;
 
-/**
- * Exception implying that No configuration was provided to the application.
- */
-public class NoConfigurationException extends Exception {
+import com.github.jonbonazza.puni.core.handlers.HttpHandler;
+import com.github.jonbonazza.puni.core.requests.HttpRequest;
+import com.github.jonbonazza.puni.core.requests.HttpResponse;
 
-    public NoConfigurationException() {
-        super("No configuration file provided. Please call loadConfiguration() before starting the application.");
+public class HelloWorldHandler implements HttpHandler {
+
+    @Override
+    public HttpResponse handle(HttpRequest req) {
+        return new HttpResponse("Hello World!");
     }
 }

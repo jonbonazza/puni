@@ -14,9 +14,10 @@
  * the License.
  */
 
-package com.github.core.mux;
+package com.github.jonbonazza.puni.core.mux;
 
-import com.github.core.handlers.HttpHandler;
+import com.github.jonbonazza.puni.core.handlers.HttpHandler;
+import com.github.jonbonazza.puni.core.requests.HttpRequest;
 import com.google.common.annotations.VisibleForTesting;
 import io.netty.handler.codec.http.HttpMethod;
 
@@ -25,7 +26,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 /**
- * Default {@link com.github.core.mux.Muxer} implementation using Regex.
+ * Default {@link Muxer} implementation using Regex.
  */
 public class DefaultMuxer  implements Muxer {
 
@@ -52,7 +53,7 @@ public class DefaultMuxer  implements Muxer {
      * Registers handler for muxing at resource path and method method.
      * @param method The HTTP method that handler should be tied to.
      * @param path The resource that handler should be tied to.
-     * @param handler The {@link com.github.core.handlers.HttpHandler} that should handle requests at method and path.
+     * @param handler The {@link com.github.jonbonazza.puni.core.handlers.HttpHandler} that should handle requests at method and path.
      */
     public void handle(HttpMethod method, String path, HttpHandler handler) {
         methodMap.get(method).put(path, handler);
@@ -60,14 +61,13 @@ public class DefaultMuxer  implements Muxer {
 
     /**
      * Uses Regex to mux a request with resource resource and method method.
-     * @param resource The resource of the request to mux.
-     * @param method The HTTP method of the request to mux.
-     * @return
+     * @param request The request to mux.
+     * @return The {@link com.github.jonbonazza.puni.core.handlers.HttpHandler} that should handle the request.
      */
-    public HttpHandler mux(String resource, HttpMethod method) {
-        Map<String, HttpHandler> handlerMap = methodMap.get(method);
+    public HttpHandler mux(HttpRequest request) {
+        Map<String, HttpHandler> handlerMap = methodMap.get(request.getMethod());
         for (Map.Entry<String, HttpHandler> entry : handlerMap.entrySet()) {
-            if (Pattern.matches(entry.getKey(), resource))
+            if (Pattern.matches(entry.getKey(), request.getUri().split("\\?")[0]))
                 return entry.getValue();
         }
 

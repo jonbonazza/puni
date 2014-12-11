@@ -14,7 +14,7 @@
  * the License.
  */
 
-package com.github.core.config;
+package com.github.jonbonazza.puni.core.config;
 
 /**
  * SSL related configuration.

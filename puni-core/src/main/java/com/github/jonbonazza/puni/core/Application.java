@@ -14,13 +14,13 @@
  * the License.
  */
 
-package com.github.core;
+package com.github.jonbonazza.puni.core;
 
-import com.github.core.config.AppConfiguration;
-import com.github.core.config.SSLConfiguration;
-import com.github.core.exceptions.NoConfigurationException;
-import com.github.core.mux.DefaultMuxer;
-import com.github.core.mux.Muxer;
+import com.github.jonbonazza.puni.core.config.AppConfiguration;
+import com.github.jonbonazza.puni.core.config.SSLConfiguration;
+import com.github.jonbonazza.puni.core.exceptions.NoConfigurationException;
+import com.github.jonbonazza.puni.core.mux.DefaultMuxer;
+import com.github.jonbonazza.puni.core.mux.Muxer;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
 import io.netty.channel.EventLoopGroup;
@@ -95,7 +95,7 @@ public abstract class Application<T extends AppConfiguration> {
 
     /**
      * Starts the application server. {@link Application#loadConfiguration} must already have been called
-     * or a {@link com.github.core.exceptions.NoConfigurationException} will be thrown.
+     * or a {@link com.github.jonbonazza.puni.core.exceptions.NoConfigurationException} will be thrown.
      * @throws Exception if something goes wrong during the startup process. If an exception is thrown, the server was
      * not started.
      */

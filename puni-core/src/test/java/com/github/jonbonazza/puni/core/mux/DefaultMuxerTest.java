@@ -14,10 +14,13 @@
  * the License.
  */
 
-package com.github.core.mux;
+package com.github.jonbonazza.puni.core.mux;
 
-import com.github.core.handlers.HttpHandler;
+import com.github.jonbonazza.puni.core.handlers.HttpHandler;
+import com.github.jonbonazza.puni.core.requests.HttpRequest;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpVersion;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -28,9 +31,6 @@ import java.util.Map;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-/**
- * Created by bonazza on 12/3/14.
- */
 public class DefaultMuxerTest {
 
     private DefaultMuxer muxer;
@@ -46,10 +46,13 @@ public class DefaultMuxerTest {
     }
     @Test
     public void testMux() {
-        HttpHandler handler = muxer.mux("/test/test", HttpMethod.GET);
+        HttpRequest request = new HttpRequest(new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
+                HttpMethod.GET, "/test/test"));
+        HttpHandler handler = muxer.mux(request);
         assertNotNull(handler);
 
-        handler = muxer.mux("/test", HttpMethod.GET);
+        request.setUri("/test");
+        handler = muxer.mux(request);
         assertNull(handler);
     }
 

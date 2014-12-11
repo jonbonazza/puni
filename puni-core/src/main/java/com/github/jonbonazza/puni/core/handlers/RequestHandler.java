@@ -14,9 +14,11 @@
  * the License.
  */
 
-package com.github.core.handlers;
+package com.github.jonbonazza.puni.core.handlers;
 
-import com.github.core.mux.Muxer;
+import com.github.jonbonazza.puni.core.mux.Muxer;
+import com.github.jonbonazza.puni.core.requests.HttpRequest;
+import com.github.jonbonazza.puni.core.requests.HttpResponse;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandlerContext;
@@ -32,8 +34,8 @@ public class RequestHandler extends SimpleChannelInboundHandler<FullHttpRequest>
     private Muxer muxer;
 
     /**
-     * Creates a new instance of RequestHandler with the provided {@link com.github.core.mux.Muxer}
-     * @param muxer The {@link com.github.core.mux.Muxer} to use for muxing incoming requests.
+     * Creates a new instance of RequestHandler with the provided {@link com.github.jonbonazza.puni.core.mux.Muxer}
+     * @param muxer The {@link com.github.jonbonazza.puni.core.mux.Muxer} to use for muxing incoming requests.
      */
     public RequestHandler(Muxer muxer) {
         this.muxer = muxer;
@@ -45,23 +47,19 @@ public class RequestHandler extends SimpleChannelInboundHandler<FullHttpRequest>
             sendError(ctx, HttpResponseStatus.BAD_REQUEST);
             return;
         }
-
-        HttpMethod method = req.getMethod();
-        System.out.println(req.getDecoderResult().toString());
-        String resource = req.getUri().split("\\?")[0];
-        HttpHandler handler = muxer.mux(resource, method);
+        HttpRequest httpRequest = new HttpRequest(req);
+        HttpHandler handler = muxer.mux(httpRequest);
         if (handler == null) {
             sendError(ctx, HttpResponseStatus.NOT_FOUND);
             return;
         }
 
-        FullHttpResponse resp = handler.handle(req);
+        HttpResponse resp = handler.handle(httpRequest);
         ctx.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
     }
 
     private void sendError(ChannelHandlerContext context, HttpResponseStatus status) {
-        FullHttpResponse resp = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1, status,
-                Unpooled.copiedBuffer(String.valueOf(status), CharsetUtil.UTF_8));
+        HttpResponse resp = new HttpResponse(status, String.valueOf(status));
         resp.headers().set(HttpHeaders.Names.CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         context.writeAndFlush(resp).addListener(ChannelFutureListener.CLOSE);
