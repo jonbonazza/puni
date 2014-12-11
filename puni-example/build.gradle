@@ -6,6 +6,11 @@ repositories {
     mavenCentral()
 }
 
+shadowJar {
+    baseName='puni-example'
+    classifier=''
+}
+
 dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.11'
 
