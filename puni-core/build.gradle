@@ -52,7 +52,6 @@ publishing {
 
             artifact sourceJar {
                 classifier "sources"
-                version "${version}"
             }
         }
     }
@@ -96,4 +95,5 @@ bintray {
 }
 
 build.dependsOn("shadowJar")
-preTagCommit.dependsOn("bintrayUpload")
+build.dependsOn("sourceJar")
+createReleaseTag.dependsOn("bintrayUpload")
