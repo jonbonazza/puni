@@ -49,7 +49,6 @@ publishing {
             from components.shadow
             groupId = 'com.github.jonbonazza'
             artifactId = 'puni-core'
-
             artifact sourceJar {
                 classifier "sources"
             }
@@ -94,6 +93,6 @@ bintray {
     }
 }
 
-build.dependsOn("shadowJar")
-build.dependsOn("sourceJar")
+createReleaseTag.dependsOn("shadowJar")
+createReleaseTag.dependsOn("sourceJar")
 createReleaseTag.dependsOn("bintrayUpload")
